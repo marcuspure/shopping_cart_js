@@ -1,13 +1,11 @@
 document.addEventListener('DOMContentLoaded',() => {
     
-    const removeItemBtns = document.querySelectorAll('.remove-btn')
-    removeItemBtns.forEach(btn => { 
-        // 監聽點擊事件
+    document.querySelectorAll('.remove-btn').forEach(btn =>{
+ // 監聽點擊事件
         btn.addEventListener('click', setRemoveItemBtn)
-          
-        })
-        const inputs = document.querySelectorAll('.cart .quantity')
-             inputs.forEach(input => {
+    })
+   
+       document.querySelectorAll('.cart .quantity').forEach(input => {
           input.addEventListener('change', setQuantity)
 
         }) 
@@ -29,13 +27,13 @@ function setAddItemBtn(e) {
     console.log(productName,price);
   }
 
+//   計算數量
 function setQuantity(e) {
     // target =btn
     const input = e.target
     let quantity = input.value
     // 如果數量小於等於０ 
     if (quantity <= 0){
-
         // 數量預設為1
         quantity = 1;
         // 要等於1
@@ -46,7 +44,8 @@ function setQuantity(e) {
     const cartItem = input.parentElement.parentElement
     const price = cartItem.querySelector('.price').innerText.replace('$','')
     cartItem.querySelector('.subtotal').innerText = `$${quantity * price}`
-
+    
+    updateCart()
   }
 
 // 移除購物車
@@ -59,12 +58,12 @@ function setRemoveItemBtn(e) {
 
 // 算購物車總價
 function updateCart(){
-    const cartitems = document.querySelectorAll('.cart .cart-item')
+    const cartItems = document.querySelectorAll('.cart .cart-item')
 
     // 讓一開始的總值為0
     let total = 0
 
-    cartitems.forEach(item =>{
+    cartItems.forEach(item =>{
       const quantity =  item.querySelector('.quantity').value
       const price =  item.querySelector('.price').innerText.replace('$', '')
         total += (quantity * price)
