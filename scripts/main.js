@@ -23,8 +23,30 @@ function setAddItemBtn(e) {
     const productName = product.querySelector('.product-name').innerText
     // 定義然後抓取價錢
     const price = product.querySelector('.price').innerText.replace('$','')
-    
-    console.log(productName,price);
+
+    // element 創造元素ＨＴＭＬ
+    const row = document.createElement('tr')
+    row.classList.add('cart-item')
+    row.innerHTML = `
+        <td>${productName}</td>
+        <td><input type="number" value="1" class="quantity"></td>
+        <td class="price">${price}</td>
+        <td class="subtotal">${price}</td>
+        <td><button class="remove-item-btn btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button></td>       
+    `
+     const itemList = document.querySelector('.item-list')
+     itemList.appendChild(row)
+
+     row.querySelectorAll('.remove-item-btn').forEach(btn => {
+        btn.addEventListener('click', setRemoveItemBtn)
+      })
+      row.querySelectorAll('.cart .quantity').forEach(input => {
+        input.addEventListener('change', setQuantity)
+      })
+    //   row.querySelector('.remove-item-btn').addEventListener('click', setRemoveItemBtn)也能增加
+
+    //  row.querySelector('.cart .quantity').addEventListener('change', setQuantity)也能加數量
+      updateCart()
   }
 
 //   計算數量
@@ -44,7 +66,7 @@ function setQuantity(e) {
     const cartItem = input.parentElement.parentElement
     const price = cartItem.querySelector('.price').innerText.replace('$','')
     cartItem.querySelector('.subtotal').innerText = `$${quantity * price}`
-    
+
     updateCart()
   }
 
@@ -69,6 +91,6 @@ function updateCart(){
         total += (quantity * price)
     })
 
-    document.querySelector('.total-price').innerText = `$${total}`
+    document.querySelector('.total-price').innerText = `$${Math.round(total*100) / 100 }`
     // console.log(total);
 }
