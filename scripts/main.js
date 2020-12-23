@@ -13,9 +13,14 @@ document.addEventListener('DOMContentLoaded',() => {
         document.querySelectorAll('.items .add-item-btn').forEach(btn => {
             btn.addEventListener('click', setAddItemBtn)
           })
+        document.querySelector('.empty-cart-btn').addEventListener('click',emptyCart)
         
-
 })
+    function emptyCart(){
+        document.querySelector('.item-list').innerHTML= ''
+        updateCart()
+    }
+
 
 function setAddItemBtn(e) {
     const product = e.currentTarget.parentElement.parentElement
@@ -23,12 +28,24 @@ function setAddItemBtn(e) {
     const productName = product.querySelector('.product-name').innerText
     // 定義然後抓取價錢
     const price = product.querySelector('.price').innerText.replace('$','')
+    // items = 三個ＩＴＥＭ
+    const items = document.querySelectorAll('.cart-item')
+    for(let i = 0; i < items.length; i++){
+    const item = items[i]
+    const title = items[i].querySelector('.title').innerText
+    if (title == productName) {
+    //   增加數量
+    item.querySelector('.quantity').value = Number(item.querySelector('.quantity').value) + 1
+    updateCart()
+      return;
+    }
+  }
 
     // element 創造元素ＨＴＭＬ
     const row = document.createElement('tr')
     row.classList.add('cart-item')
     row.innerHTML = `
-        <td>${productName}</td>
+        <td class="title">${productName}</td>
         <td><input type="number" value="1" class="quantity"></td>
         <td class="price">${price}</td>
         <td class="subtotal">${price}</td>
@@ -88,6 +105,7 @@ function updateCart(){
     cartItems.forEach(item =>{
       const quantity =  item.querySelector('.quantity').value
       const price =  item.querySelector('.price').innerText.replace('$', '')
+      item.querySelector('.subtotal').innerText = `$${ quantity * price }`
         total += (quantity * price)
     })
 
